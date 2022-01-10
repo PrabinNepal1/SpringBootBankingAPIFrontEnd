@@ -9,7 +9,7 @@ import {
 import Homepage from './Components/Homepage'
 import Registration from './Components/Registration';
 import Login from './Components/Login';
-// import Userpage from './component/userpage';
+import UserPage from './Components/UserPage';
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
             <Route  path='/' element={<Homepage/>}/>
             <Route  path='/Registration' element={<Registration/>}/>
             <Route  path='/Login' element={<Login/>}/>
+            <Route  path='/userPage' element={<UserPage/>}/>
           </>
         </Routes>
       </Router>
