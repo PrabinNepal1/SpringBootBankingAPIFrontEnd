@@ -5,6 +5,7 @@ import {
   Route
 } from 'react-router-dom';
 
+import { AuthProvider } from '../Services/UserService';
 
 import Homepage from './Components/Homepage'
 import Registration from './Components/Registration';
@@ -13,6 +14,7 @@ import UserPage from './Components/UserPage';
 
 function App() {
   return (
+    <AuthProvider>
       <Router>
         <Routes>
           <>
@@ -23,6 +25,9 @@ function App() {
           </>
         </Routes>
       </Router>
+
+    </AuthProvider>
+      
   );
 }
 
