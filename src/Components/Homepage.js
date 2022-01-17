@@ -21,7 +21,7 @@ export default function Homepage(){
                             
                             <div className="bg-image hover-overlay ripple shadow-1-strong rounded w-100 h-100"
                                     data-ripple-color="light">
-                            <img className="w-100 h-100" src={require("../Img/hompagehero.jpg")}/>
+                            <img className="w-100 h-100" alt="Homepage Hero Image" src={require("../Img/hompagehero.jpg")}/>
                         
                         </div>
                         <div className="row">

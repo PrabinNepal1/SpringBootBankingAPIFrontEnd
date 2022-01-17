@@ -5,7 +5,7 @@ import {
   Route
 } from 'react-router-dom';
 
-import { AuthProvider } from '../Services/UserService';
+import { AuthProvider } from './Services/UserService';
 
 import Homepage from './Components/Homepage'
 import Registration from './Components/Registration';

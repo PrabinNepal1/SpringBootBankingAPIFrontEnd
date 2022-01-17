@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useAuth } from '../Services/UserService';
 
 
 export default function Registration() {
 
 	const {registerUser} = useAuth();
-	const [accountDetails, setAccountDetails] = useState({username: '', password:'', confirmPassword:'', email:'', balance:'', address:''})
+	const [accountDetails, setAccountDetails] = useState({username: '', password:'', confirmPassword:'', email:'', balance:0, address:''})
     
 	const [error, setError] = useState('')
     const [message, setMessage] = useState('')
@@ -14,16 +14,18 @@ export default function Registration() {
 	const handleInputChange = e => {
         const { name, value } = e.target
 
-        setUserData({ ...userData, [name]:value })
+        setAccountDetails({ ...accountDetails, [name]:value })
     }
 
 	const handleSubmit = (e) =>{
+		e.preventDefault()
+
         if(accountDetails.password !== accountDetails.confirmPassword){
             setError("Password doesn't match");
         }
-        e.preventDefault()
+        
         setError("")
-        registerUser(accountDetails.username, accountDetails.password, accountDetails.email, accountDetails.address, accountDetails.balance).then(() => {
+        registerUser(accountDetails.username, accountDetails.password, accountDetails.email, accountDetails.balance, accountDetails.address).then(() => {
                 setMessage("Successfully Created Your Account")
               })
               .catch( error => {
@@ -44,21 +46,19 @@ export default function Registration() {
 	
 	                <p className="text-center h1 fw-bold mb-2 mx-1 mx-md-4 mt-4">Sign up</p>
 
-					{error && <Alert variant="danger">{error}</Alert>}
-                	{message && <Alert variant="success">{message}</Alert>}	
+					{error && <div className="alert alert-danger" role="alert">{error}</div>}
+                	{message && <div className="alert alert-primary" role="alert">{message}</div>}	
 
 	                <form className="mx-1 mx-md-2" method="POST" onSubmit={handleSubmit}>
 	             
 	                  <div className="d-flex flex-row align-items-center mb-2">
 	                    <i className="fas fa-user fa-lg me-3 fa-fw"></i>
 	                    <div className="form-outline flex-fill mb-0">
-	                      <label className="form-label" htmlFor="form3Example1c">User Name</label>
+	                      <label className="form-label" htmlFor="form3Example1c">Username</label>
 	 
-	                      <input type="text" id="form3Example1c" name="userName" className="form-control"
+	                      <input type="text" id="form3Example1c" name="username" className="form-control"
 						 	  onChange = {handleInputChange} 
-						  />
-	                      <span className="text-danger"></span>
-	                      
+						   required />
 	                    </div>
 	                  </div>
 	
@@ -75,12 +75,9 @@ export default function Registration() {
 					  <div className="d-flex flex-row align-items-center mb-2">
 	                    <i className="fas fa-user fa-lg me-3 fa-fw"></i>
 	                    <div className="form-outline flex-fill mb-0">
-	                      <label className="form-label" htmlFor="form3Example4c">Address</label>
-	 
-	                      <input type="text" id="form3Example4c" name="address" className="form-control" 
+	                      <label className="form-label" htmlFor="form3Example4ac">Address</label>
+	                      <input type="text" id="form3Example4ac" name="address" className="form-control" 
 						  		  onChange = {handleInputChange}/>
-	                      <span className="text-danger"></span>
-	                      
 	                    </div>
 	                  </div>
 	
@@ -90,7 +87,7 @@ export default function Registration() {
 	                    	 <label className="form-label" htmlFor="form3Example4c">Password</label>
 	                    	 <span className="text-danger"></span>
 	                      <input type="password" id="form3Example4c" name="password" className="form-control" 
-						   		onChange = {handleInputChange}/>
+						   		onChange = {handleInputChange} required/>
 	                     
 	                    </div>
 	                  </div>
@@ -102,7 +99,7 @@ export default function Registration() {
 	                    	 
 	                    	 <span className="text-danger" name="errorInvalidPassword"></span>
 	                      <input type="password" id="form3Example4cd" name="confirmPassword" className="form-control"   
-						  		onChange = {handleInputChange}/>
+						  		onChange = {handleInputChange} required/>
 	                     
 	                    </div>
 	                  </div>
@@ -111,7 +108,7 @@ export default function Registration() {
 	                    <i className="fas fa-key fa-lg me-3 fa-fw"></i>
 	                    <div className="form-outline flex-fill mb-0">
 	                    	<label className="form-label" htmlFor="Form3Example4cde">Initial Deposit</label>
-	                      <input type="number" min="1" id="form3Example4cde" name="initialDeposit" className="form-control" 
+	                      <input type="number" min="1" id="form3Example4cde" name="balance" className="form-control" 
 						  		  onChange = {handleInputChange} required />
 	                      
 	                    </div>

@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 
 import axios from 'axios';
 
-const baseurl = "http://localhost:8080/api/";
+const baseurl = "http://localhost:8080/api";
 
 const AuthContext = React.createContext()
 
@@ -17,7 +17,7 @@ export function AuthProvider({children}) {
     const [token, setToken] = useState()
     const [userDetails, setUserDetails] =useState([])
 
-    async function registerUser(username, password, email, displayname){
+    async function registerUser(username, password, email, balance, address){
         return await axios
                 .post(baseurl + "/account/add", {
                         username,
@@ -28,17 +28,9 @@ export function AuthProvider({children}) {
                 });
       }
 
+
       useEffect(() =>{
-        const token = sessionStorage.getItem("user");
-    
-        if(token != null ){
-            setCurrentUser(parseJwt(token));
-          }
-        else{
-          setCurrentUser(null);
-        }
         setLoading(false)
-    
       },[])
 
       const value = {
