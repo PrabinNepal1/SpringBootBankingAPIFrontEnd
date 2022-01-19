@@ -1,42 +1,58 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "./DepositModal";
 import WithdrawModal from "./WithdrawModal";
 import TransferModal from "./TransferModal";
 
+import { useAuth } from "../Services/UserService";
+
 export default function UserPage(){
     
+    const {getUserDetails ,getRecentTransaction} = useAuth();
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState("Dummy");
-    const navigate = useNavigate()
+    const currentUser = sessionStorage.getItem("User")
+
+    const [userDetails, setUserDetails]  = useState()
+    const [transaction, setTransaction] = useState()
     
     const [depositModalShow, setDepositModalShow] = useState(false);
     const [withdrawModalShow, setWithdrawModalShow] = useState(false);
     const [transferModalShow, setTransferModalShow] = useState(false);
 
     function handleLogout(){
-        console.log("LogOut Sucess")
+        console.log("Logout Sucess")
     }
+
+    useEffect(() => {
+        console.log(currentUser)
+        getUserDetails(currentUser).then((res) => {
+            setUserDetails(res.data);
+        })
+
+        console.log(userDetails)
+        const loadTransaction = async () => {
+            const trans = await getRecentTransaction(userDetails.id)
+            setTransaction(trans)
+        }
+
+        loadTransaction();
+        setLoading(false);
+    }, [])
+
+  
 
 
     return(
         <div className="container-lg d -flex align-items-center mt-5 mb-5">
         <div className="row">
-            <div class="col">
-            {/* {loading && <p>loading...</p>} */}
-        {user &&
+            <div className="col">
+        {loading && <p>loading...</p>}
+        {userDetails &&
           <><div className="card w-75">
                 <div className="card-body">
-                    <h5 className="card-title"> Profile : {user.username}</h5>
-                    <h5 className="card-title">  Email: {user.email} </h5>
-                    {/* { user.checkingAccount &&
-                            <Card.Title>Account Type: Checking </Card.Title>
-                    }
-
-                    { user.savingAccount &&
-                            <Card.Title> Account Type: Saving </Card.Title>
-                    } */}
-                    <h5 className="card-title">Account Balance: ${user.balance} </h5>
+                    <h5 className="card-title"> Profile : {userDetails.username}</h5>
+                    <h5 className="card-title">  Email: {userDetails.email} </h5>
+                    <h5 className="card-title">Account Balance: ${userDetails.balance} </h5>
                     <h5 className="card-title mt-5"> Choose Transactions Option</h5>
                     
                     <div className="mb-2">
@@ -72,7 +88,17 @@ export default function UserPage(){
             <div className="col">
                 <div className="card w-100">
                         <div className="card-body">
-                            <h5 className="card-title"> Recent Transactoions </h5>
+                         <h5 className="card-title"> Recent Transactoions </h5>
+                        {
+                            transaction && transaction.map(
+                            transactions =>
+                            <tr key={transactions.id}>
+                            <td>{transactions.timestamp}</td>
+                            <td>{transactions.type}</td>
+                            <td>{transactions.amount}</td>
+                            <td>{transactions.description}</td>
+                            </tr>
+                            )}
                         </div>
                 
                 </div>   

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useAuth } from '../Services/UserService';
+import {Link, useNavigate} from 'react-router-dom';
 
 
 export default function Registration() {
@@ -9,6 +10,8 @@ export default function Registration() {
     
 	const [error, setError] = useState('')
     const [message, setMessage] = useState('')
+
+	const navigate = useNavigate()
     
 
 	const handleInputChange = e => {
@@ -27,10 +30,15 @@ export default function Registration() {
         setError("")
         registerUser(accountDetails.username, accountDetails.password, accountDetails.email, accountDetails.balance, accountDetails.address).then(() => {
                 setMessage("Successfully Created Your Account")
+				setTimeout( () => {
+					navigate("/Login")
+				},5000)
+				
               })
               .catch( error => {
                 setError(error.message);
               })
+			  
     }
 	
 	return(

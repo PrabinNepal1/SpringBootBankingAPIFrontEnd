@@ -12,10 +12,7 @@ export function useAuth(){
 
 export function AuthProvider({children}) {
     
-    const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
-    const [token, setToken] = useState()
-    const [userDetails, setUserDetails] =useState([])
 
     async function registerUser(username, password, email, balance, address){
         return await axios
@@ -24,17 +21,30 @@ export function AuthProvider({children}) {
                         password,
                         balance,
                         email,
-                        address
+                        address,
+                        "transactions": []
+
                 });
       }
+    
+    async function getUserDetails(username){
+        return await axios
+            .get(baseurl + `/account/username/${username}`);
+    }
 
+    async function getRecentTransations(id){
+      return await axios
+      .get(baseurl + `/transaction/five_recent/${id}`);
+    }
 
       useEffect(() =>{
         setLoading(false)
       },[])
 
       const value = {
-          registerUser
+          registerUser,
+          getUserDetails,
+          getRecentTransations
         }
 
       return (
