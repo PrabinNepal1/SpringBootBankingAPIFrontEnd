@@ -23,9 +23,6 @@ export default function Login() {
     const handleSubmit = (e) =>{
 		e.preventDefault()
         getUserDetails(user.username).then((res) => {
-
-            console.log(res)
-
             if (res.status !== 200){
                 setError("Invalid Credentials");
             }
@@ -34,6 +31,7 @@ export default function Login() {
             }
             else{
                 sessionStorage.setItem("User", user.username)
+                sessionStorage.setItem("UserID", res.data.id)
                 navigate("/UserPage")
             }
         })

@@ -8,9 +8,10 @@ import { useAuth } from "../Services/UserService";
 
 export default function UserPage(){
     
-    const {getUserDetails ,getRecentTransaction} = useAuth();
+    const {getUserDetails ,getRecentTransactions} = useAuth();
     const [loading, setLoading] = useState(true)
     const currentUser = sessionStorage.getItem("User")
+    const userID = sessionStorage.getItem("UserID")
 
     const [userDetails, setUserDetails]  = useState()
     const [transaction, setTransaction] = useState()
@@ -23,6 +24,7 @@ export default function UserPage(){
 
     function handleLogout(){
         sessionStorage.removeItem("User");
+        sessionStorage.removeItem("UserID");
         navigate("/");
         console.log("Logout Sucess")
     }
@@ -30,12 +32,17 @@ export default function UserPage(){
     useEffect(() => {
         getUserDetails(currentUser).then((res) => {
             setUserDetails(res.data);
-        })            
-
-        console.log(userDetails)
+        })  
+        
+        getRecentTransactions(userID).then((res) => {
+            setTransaction(res.data);
+        }) 
 
         setLoading(false);
-    }, [depositModalShow, withdrawModalShow, transferModalShow])
+        
+    }, [depositModalShow, withdrawModalShow, transferModalShow]);
+
+    
 
   
 
@@ -87,16 +94,21 @@ export default function UserPage(){
                 <div className="card w-100">
                         <div className="card-body">
                          <h5 className="card-title"> Recent Transactoions </h5>
+                         <table className= "table table-striped">
+                         <tbody>
                         {
                             transaction && transaction.map(
                             transactions =>
                             <tr key={transactions.id}>
+                            {console.log(transactions)}
                             <td>{transactions.timestamp}</td>
                             <td>{transactions.type}</td>
                             <td>{transactions.amount}</td>
                             <td>{transactions.description}</td>
                             </tr>
                             )}
+                        </tbody>                            
+                        </table>
                         </div>
                 
                 </div>   

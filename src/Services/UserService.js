@@ -32,7 +32,7 @@ export function AuthProvider({children}) {
             .get(baseurl + `/account/username/${username}`);
     }
 
-    async function getRecentTransations(id){
+    async function getRecentTransactions(id){
       return await axios
       .get(baseurl + `/transaction/five_recent/${id}`);
     }
@@ -65,7 +65,7 @@ export function AuthProvider({children}) {
       const value = {
           registerUser,
           getUserDetails,
-          getRecentTransations,
+          getRecentTransactions,
           depositAmount,
           withdrawAmount,
           transferAmount
