@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useAuth } from '../Services/UserService';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 export default function Login() {
@@ -10,7 +10,6 @@ export default function Login() {
 	const [user, setUser] = useState({username: '', password:''})
     
 	const [error, setError] = useState('')
-    const [message, setMessage] = useState('')
 
     const navigate = useNavigate()
     
@@ -55,7 +54,6 @@ export default function Login() {
                         <p className="text-center h1 fw-bold mb-2 mx-1 mx-md-4 mt-4">Log In</p>
 
                         {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                	    {message && <div className="alert alert-primary" role="alert">{message}</div>}
 
                         <form className="mx-1 mx-md-2" method="POST" onSubmit={handleSubmit}>
                         <div className="d-flex flex-row align-items-center mb-2">

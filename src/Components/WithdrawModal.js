@@ -1,7 +1,23 @@
-import React from "react";
-import {Form, Button, Modal, FloatingLabel} from 'react-bootstrap';
+import React, {useState} from "react";
+import {Form, Button, Modal, FloatingLabel} from 'react-bootstrap'
+
+import { useAuth } from "../Services/UserService";
 
 export default function WithdrawModal(props) {
+
+  const currentUser = sessionStorage.getItem("User");
+  const [message, setMessage] = useState();
+  const [amount, setAmount] = useState();
+  const {withdrawAmount} = useAuth()
+
+
+const handleSubmit = (e) =>{
+  e.preventDefault()
+      withdrawAmount(currentUser, amount).then((res) => {
+       console.log("Complete")
+       setMessage("Withdraw Successful")
+      })
+  }
 
     return(
         <Modal
@@ -17,7 +33,10 @@ export default function WithdrawModal(props) {
         </Modal.Header>
         <Modal.Body>
           <h4>Enter the amount to withdraw:</h4>
-          <Form className="mx-3">
+
+          {message && <div className="alert alert-success" role="alert">{message}</div>}
+
+          <Form className="mx-3" onSubmit={handleSubmit}>
                     <Form.Group>
                     <FloatingLabel
                         controlId="floatingInput"
@@ -28,6 +47,7 @@ export default function WithdrawModal(props) {
                                 min="1"
                                 placeholder="Withdraw Amount"
                                 name="withdraw"
+                                onChange = {(e) => setAmount(e.target.value)}
                                 required
                                 >
                              </Form.Control>

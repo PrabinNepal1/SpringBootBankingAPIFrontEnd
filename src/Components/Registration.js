@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useAuth } from '../Services/UserService';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 export default function Registration() {

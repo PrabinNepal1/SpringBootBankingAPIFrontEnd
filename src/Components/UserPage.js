@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import DepositModal from "./DepositModal";
 import WithdrawModal from "./WithdrawModal";
 import TransferModal from "./TransferModal";
@@ -19,25 +19,23 @@ export default function UserPage(){
     const [withdrawModalShow, setWithdrawModalShow] = useState(false);
     const [transferModalShow, setTransferModalShow] = useState(false);
 
+    const navigate = useNavigate()
+
     function handleLogout(){
+        sessionStorage.removeItem("User");
+        navigate("/");
         console.log("Logout Sucess")
     }
 
     useEffect(() => {
-        console.log(currentUser)
         getUserDetails(currentUser).then((res) => {
             setUserDetails(res.data);
-        })
+        })            
 
         console.log(userDetails)
-        const loadTransaction = async () => {
-            const trans = await getRecentTransaction(userDetails.id)
-            setTransaction(trans)
-        }
 
-        loadTransaction();
         setLoading(false);
-    }, [])
+    }, [depositModalShow, withdrawModalShow, transferModalShow])
 
   
 

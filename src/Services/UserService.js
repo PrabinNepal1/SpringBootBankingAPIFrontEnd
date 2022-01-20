@@ -37,6 +37,27 @@ export function AuthProvider({children}) {
       .get(baseurl + `/transaction/five_recent/${id}`);
     }
 
+    async function depositAmount(username, amount){
+      return await axios
+        .put(baseurl + `/account/username/deposit/${username}/${amount}`);
+    }
+
+    async function withdrawAmount(username, amount){
+      return await axios
+        .put(baseurl + `/account/username/withdraw/${username}/${amount}`);
+    }
+
+    async function transferAmount(fromUser, toUser, transferAmount){
+      return await axios
+          .put (baseurl + "/transaction/transfer", {}, {
+            params:{
+              fromAcc: fromUser,
+              toAcc: toUser,
+              amount: transferAmount
+            }
+          });
+    }
+
       useEffect(() =>{
         setLoading(false)
       },[])
@@ -44,7 +65,10 @@ export function AuthProvider({children}) {
       const value = {
           registerUser,
           getUserDetails,
-          getRecentTransations
+          getRecentTransations,
+          depositAmount,
+          withdrawAmount,
+          transferAmount
         }
 
       return (

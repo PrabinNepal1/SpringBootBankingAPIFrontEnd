@@ -1,7 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import {Form, Button, Modal, FloatingLabel} from 'react-bootstrap';
+import { useAuth } from "../Services/UserService";
 
 export default function TransferModal(props){
+
+  const currentUser = sessionStorage.getItem("User");
+  const [transfer, setTransfer] = useState({toAcc: '', amount:''});
+  const [message, setMessage] = useState();
+
+  const {transferAmount} = useAuth();
+
+  const handleInputChange = e => {
+    const { name, value } = e.target
+
+    setTransfer({ ...transfer, [name]:value })
+}
+
+const handleSubmit = (e) =>{
+  e.preventDefault()
+      transferAmount(currentUser, transfer.toAcc, transfer.amount).then((res) => {
+       console.log("Complete")
+       setMessage("Transfer Successful")
+      })
+  }
+
         return(
             <Modal
         {...props}
@@ -15,8 +37,11 @@ export default function TransferModal(props){
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Enter the amount to withdraw:</h4>
-          <Form className="mx-3">
+          <h4>Enter the amount to transfer:</h4>
+
+          {message && <div className="alert alert-success" role="alert">{message}</div>}
+
+          <Form className="mx-3" onSubmit={handleSubmit}>
                     <Form.Group>
                         <FloatingLabel
                             controlId="floatingInput"
@@ -25,7 +50,8 @@ export default function TransferModal(props){
                                 <Form.Control
                                     type="text"
                                     placeholder="Receiver's User ID"
-                                    name="reciverUserID"
+                                    name="toAcc"
+                                    onChange={handleInputChange}
                                     required
                                     >
                                 </Form.Control>
@@ -40,13 +66,14 @@ export default function TransferModal(props){
                                     type="number"
                                     min="1"
                                     placeholder="Transfer Amount"
-                                    name="transfer"
+                                    name="amount"
+                                    onChange={handleInputChange}
                                     required
                                     >
                                 </Form.Control>
                         </FloatingLabel>
                     </Form.Group>
-                    <Button variant="primary" type="submit">Withdraw</Button>
+                    <Button variant="primary" type="submit">Transfer</Button>
             </Form>
         </Modal.Body>
         <Modal.Footer>
