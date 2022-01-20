@@ -56,6 +56,7 @@ export default function UserPage(){
           <><div className="card w-75">
                 <div className="card-body">
                     <h5 className="card-title"> Profile : {userDetails.username}</h5>
+                    <h5 className="card-title"> Address : {userDetails.address}</h5>
                     <h5 className="card-title">  Email: {userDetails.email} </h5>
                     <h5 className="card-title">Account Balance: ${userDetails.balance} </h5>
                     <h5 className="card-title mt-5"> Choose Transactions Option</h5>

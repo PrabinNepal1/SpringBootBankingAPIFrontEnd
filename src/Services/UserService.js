@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 
 import axios from 'axios';
 
-const baseurl = "http://localhost:8080/api";
+const baseurl = "http://18.118.217.1:8080/api";
 
 const AuthContext = React.createContext()
 

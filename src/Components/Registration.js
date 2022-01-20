@@ -32,7 +32,7 @@ export default function Registration() {
                 setMessage("Successfully Created Your Account")
 				setTimeout( () => {
 					navigate("/Login")
-				},5000)
+				},3000)
 				
               })
               .catch( error => {
